@@ -1,17 +1,22 @@
 import { Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs';
+import { CountryService } from '../../services/country.service';
+import { NotFound } from "../../../shared/components/not-found/not-found";
+import { CountryInformationPage } from './country-information/country-information';
 
 @Component({
   selector: 'app-country-page',
-  imports: [],
+  imports: [NotFound, CountryInformationPage],
   templateUrl: './country-page.html',
 })
 export class CountryPage {
-  countryId = toSignal(
-    inject(ActivatedRoute).params.pipe(
-      map(params => params['countryId'])
-    )
-  );
+  countryCode = inject(ActivatedRoute).snapshot.params['code'];
+  countryService = inject(CountryService);
+
+  countryResource = rxResource({
+    params: () => ({ code: this.countryCode }),
+    stream: ({ params }) =>
+      this.countryService.searchCountryByAlphaCode(params.code)
+  });
 }

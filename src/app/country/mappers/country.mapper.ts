@@ -5,11 +5,13 @@ export class CountryMapper {
   static mapRestCountryToCountry(restCountry: RESTCountry): Country {
     return {
       cca2: restCountry.cca2,
-      flag: restCountry.flags.png,
+      flag: restCountry.flag,
       flagSvg: restCountry.flags.svg,
-      name: restCountry.name.common,
-      capital: restCountry.capital[0],
+      name: restCountry.translations['spa'].common || restCountry.name.common,
+      capital: restCountry.capital?.[0],
       population: restCountry.population,
+      region: restCountry.region,
+      subRegion: restCountry.subregion,
     };
   }
 

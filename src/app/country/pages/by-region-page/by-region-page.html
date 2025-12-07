@@ -1,1 +1,6 @@
-<country-list [countries]="[]" />
+<app-regions-list
+  [initialValue]="region()"
+  (selectedRegionOutput)="region.set($event)"
+/>
+
+<country-list [countries]="regionResource.value()!" />
